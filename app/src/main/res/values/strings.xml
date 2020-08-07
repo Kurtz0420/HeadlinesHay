@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HeadlinesHay</string>
+
+    <string name="news_api_key">8833c0b1962c49a2b802549139ea04cd</string>
+</resources>
