@@ -10,6 +10,6 @@ interface NewsApi{
     // https://newsapi.org/v2   - base url
 
     @GET("top-headlines")
-    suspend fun getLatestNews(@Query("country") country: String?) : ResultsArticles
+    suspend fun getLatestNews(@Query("country") country: String?, @Query("apiKey") apiKey: String?) : ResultsArticles
 
 }

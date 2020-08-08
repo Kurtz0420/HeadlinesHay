@@ -14,7 +14,7 @@ class NetworkMapper
 constructor() : EntityMapper<ArticleNetwork, ArticleLocal> {
 
 
-    override fun mapFromArticleNetwork(entity: ArticleNetwork): ArticleLocal {
+    override fun mapToArticleLocal(entity: ArticleNetwork): ArticleLocal {
 
         return ArticleLocal(
 
@@ -32,7 +32,7 @@ constructor() : EntityMapper<ArticleNetwork, ArticleLocal> {
         )
     }
 
-    override fun mapToArticleNetwork(domainModel: ArticleLocal): ArticleNetwork {
+    override fun mapFromArticleLocal(domainModel: ArticleLocal): ArticleNetwork {
 
 
         return ArticleNetwork(
@@ -51,7 +51,7 @@ constructor() : EntityMapper<ArticleNetwork, ArticleLocal> {
 
     /*Takes a list of articleNetwork, returns a list of ArticleLocal*/
     fun mapFromArticleNetworkList(articlesNetwork: List<ArticleNetwork>): List<ArticleLocal> {
-        return articlesNetwork.map { mapFromArticleNetwork(it) }
+        return articlesNetwork.map { mapToArticleLocal(it) }
     }
 
 }
