@@ -1,7 +1,8 @@
-package com.client.headlineshay
+package com.client.headlineshay.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.client.headlineshay.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

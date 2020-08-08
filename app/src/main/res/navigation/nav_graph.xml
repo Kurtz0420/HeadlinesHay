@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/feedsFragment">
+
+    <!-- MainFragment -->
+    <fragment android:id="@+id/feedsFragment"
+              android:name="com.client.headlineshay.ui.FeedsFragment"
+              android:label="fragment_feeds"
+              tools:layout="@layout/fragment_feeds">
+        <action android:id="@+id/action_feedsFragment_to_FullArticleFragment"
+                app:destination="@id/fullArticleFragment"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+        />
+
+    </fragment>
+
+
+
+    <!-- ChooseRecipientFragment -->
+    <fragment android:id="@+id/fullArticleFragment"
+              android:name="com.client.headlineshay.ui.FullArticleFragment"
+              android:label="fragment_full_article"
+              tools:layout="@layout/fragment_full_article">
+
+        <action android:id="@+id/action_fullArticleFragment_to_FeedsFragment"
+                app:destination="@id/feedsFragment"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+        />
+    </fragment>
+
+
+
+
+</navigation>
