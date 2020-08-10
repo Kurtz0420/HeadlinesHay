@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class ArticleLocal(
 
-    var sourceId : Int,
+    var sourceId : String?,
 
-    var sourceName : String,
+    var sourceName : String?,
 
     var author : String,
 

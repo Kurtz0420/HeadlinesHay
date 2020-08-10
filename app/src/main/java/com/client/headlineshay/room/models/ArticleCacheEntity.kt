@@ -2,21 +2,22 @@ package com.client.headlineshay.room.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = "articles")
+@Entity(tableName = "articles", indices = [Index(value = ["title"], unique = true)])
 data class ArticleCacheEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id:Int,
+    var id:Int?,
 
     @ColumnInfo(name = "sourceId")
-    var sourceId:Int,
+    var sourceId:String?,
 
     @ColumnInfo(name = "sourceName")
-    var sourceName:String,
+    var sourceName:String?,
 
     @ColumnInfo(name = "author")
     var author:String,

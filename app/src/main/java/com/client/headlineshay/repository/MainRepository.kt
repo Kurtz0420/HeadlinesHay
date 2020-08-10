@@ -19,20 +19,20 @@ class MainRepository
 
     ){
 
-
-    /*Gets NewsArticles From APi
-    * Converts it to Cache-able Objects
-    * Stores Cache-able Objects in DB
-    * Emits CachedObjects*/
+    /*Data retrieved from the network
+    * Sent to the cache
+    * Retrieved from the cache
+    * Emit the cache*/
     suspend fun getLatestNews() : Flow<DataState<List<ArticleLocal>>> = flow {
+
 
         emit(DataState.Loading)
         try{
 
             //gets items from api - List<ArticlesNetwork>
-            val articlesNetwork = newsApi.getLatestNews("us","8833c0b1962c49a2b802549139ea04cd")
+            val articlesResult = newsApi.getLatestNews("bitcoin","8833c0b1962c49a2b802549139ea04cd", 1)
             //converts it to local - List<ArticleLocal>
-            val articles = networkMapper.mapFromArticleNetworkList(articlesNetwork.articles)
+            val articles = networkMapper.mapFromArticleNetworkList(articlesResult.articles)
             for(article in articles){
                 //stores local -
                 articleDao.insert(cacheMapper.mapFromArticleLocal(article))
@@ -43,7 +43,7 @@ class MainRepository
             emit(DataState.Success(cacheMapper.mapFromArticleCacheEntityList(cacheArticles)))
 
         }catch (e:Exception){
-
+            emit(DataState.Error(e))
         }
     }
 

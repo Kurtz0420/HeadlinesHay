@@ -15,7 +15,7 @@ interface ArticlesDAO{
     suspend fun insert(articleCacheEntity: ArticleCacheEntity) : Long //Long:the column it has been inserted
 
 
-    @Query("SELECT * FROM articles")
+    @Query("SELECT * FROM articles ORDER BY id DESC")
     suspend fun getAllArticlesCached(): List<ArticleCacheEntity>
 
 }

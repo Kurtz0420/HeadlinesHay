@@ -7,11 +7,11 @@ data class ArticleSource(
 
     @SerializedName("id")
     @Expose
-    var id : Int,
+    var id : String?,
 
     @SerializedName("name")
     @Expose
-    var name : String
+    var name : String?
 
 ){
 

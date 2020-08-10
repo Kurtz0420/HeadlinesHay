@@ -7,19 +7,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.client.headlineshay.R
 import com.client.headlineshay.databinding.FragmentFeedsBinding
+import com.client.headlineshay.network.models.local.ArticleLocal
+import com.client.headlineshay.utils.DataState
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.*
 
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class FeedsFragment : Fragment(){
 
     private lateinit var navController: NavController
     private var binding: FragmentFeedsBinding? = null //FragmentMainBinding : Auto-Generated
 
+
+    //injecting viewmodel
+    private val viewModel : MainViewModel by viewModels()
 
 
 
@@ -50,6 +61,10 @@ class FeedsFragment : Fragment(){
 
 
 
+        subscribeObservers()
+        viewModel.setStateEvent(MainStateEvent.GetArticles)
+
+
     }
 
 
@@ -57,5 +72,40 @@ class FeedsFragment : Fragment(){
         private const val TAG = "FeedsFragment"
     }
 
+
+
+    private fun subscribeObservers(){
+        viewModel.dataState.observe(this, Observer { dataState ->
+            when(dataState){
+                is DataState.Success<List<ArticleLocal>> -> {
+
+                    Log.d(TAG, "subscribeObservers: ${dataState.data} ")
+                    for(article in dataState.data){
+                        Log.d(TAG, "subscribeObservers: ${article.title} \n")
+                    }
+                    Log.d(TAG, "subscribeObservers: ${dataState.data.size} ")
+//                    displayProgressBar(false)
+//                    appendBlogTitles(dataState.data)
+                }
+                is DataState.Error -> {
+                    Toast.makeText(activity, "Error Occured", Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "subscribeObservers: ${dataState.exception.message}")
+//                    displayProgressBar(false)
+//                    displayError(dataState.exception.message)
+                }
+                is DataState.Loading -> {
+//                    displayProgressBar(true)
+                }
+            }
+        })
+    }
+
+
+    private fun displayProgressBar(isDisplayed: Boolean){
+//        progress_bar.visibility = if(isDisplayed) View.VISIBLE else View.GONE
+    }
+
+
+    
 
 }

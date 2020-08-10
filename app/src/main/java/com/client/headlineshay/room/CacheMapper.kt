@@ -34,7 +34,7 @@ constructor() : EntityMapper<ArticleCacheEntity, ArticleLocal>{
 
         return ArticleCacheEntity(
 
-            id = 0,
+            id = null,
             sourceId = articleLocal.sourceId,
             sourceName = articleLocal.sourceName,
             author = articleLocal.author,
