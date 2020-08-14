@@ -4,6 +4,9 @@ import com.client.headlineshay.network.models.ArticleNetwork
 import com.client.headlineshay.network.models.ArticleSource
 import com.client.headlineshay.network.models.local.ArticleLocal
 import com.client.headlineshay.utils.EntityMapper
+import com.client.headlineshay.utils.TimeConversions
+import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -18,6 +21,7 @@ constructor() : EntityMapper<ArticleNetwork, ArticleLocal> {
 
         return ArticleLocal(
 
+            pk = null,
             sourceId = entity.articleSource.id,
             sourceName = entity.articleSource.name,
             author = entity.author,
@@ -26,8 +30,8 @@ constructor() : EntityMapper<ArticleNetwork, ArticleLocal> {
             url = entity.url,
             urlToImage = entity.urlToImage,
             publishedAt = entity.publishedAt,
-            content = entity.content
-
+            content = entity.content,
+            dateRetrieved = entity.dateRetrieved //saves the date, when it is fetched
 
         )
     }
@@ -44,7 +48,8 @@ constructor() : EntityMapper<ArticleNetwork, ArticleLocal> {
             url = domainModel.url,
             urlToImage = domainModel.urlToImage,
             publishedAt = domainModel.publishedAt,
-            content = domainModel.content
+            content = domainModel.content,
+            dateRetrieved = domainModel.dateRetrieved
 
         )
     }

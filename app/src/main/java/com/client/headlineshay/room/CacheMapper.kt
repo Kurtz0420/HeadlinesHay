@@ -2,7 +2,9 @@ package com.client.headlineshay.room
 
 import com.client.headlineshay.network.models.local.ArticleLocal
 import com.client.headlineshay.room.models.ArticleCacheEntity
+import com.client.headlineshay.utils.AppPreferences
 import com.client.headlineshay.utils.EntityMapper
+import java.util.*
 import javax.inject.Inject
 
 
@@ -16,6 +18,7 @@ constructor() : EntityMapper<ArticleCacheEntity, ArticleLocal>{
     override fun mapToArticleLocal(entity: ArticleCacheEntity): ArticleLocal {
         return ArticleLocal(
 
+            pk = entity.id,
             sourceId = entity.sourceId,
             sourceName = entity.sourceName,
             author = entity.author,
@@ -24,8 +27,8 @@ constructor() : EntityMapper<ArticleCacheEntity, ArticleLocal>{
             url = entity.url,
             urlToImage = entity.urlToImage,
             publishedAt = entity.publishedAt,
-            content = entity.content
-
+            content = entity.content,
+            dateRetrieved = entity.dateRetrieved
         )
     }
 
@@ -43,8 +46,10 @@ constructor() : EntityMapper<ArticleCacheEntity, ArticleLocal>{
             url = articleLocal.url,
             urlToImage = articleLocal.urlToImage,
             publishedAt = articleLocal.publishedAt,
-            content = articleLocal.content
-
+            content = articleLocal.content,
+            dateRetrieved = articleLocal.dateRetrieved,
+            country = AppPreferences.news_country,
+            category = AppPreferences.news_category
         )
     }
 
@@ -52,5 +57,8 @@ constructor() : EntityMapper<ArticleCacheEntity, ArticleLocal>{
     fun mapFromArticleCacheEntityList(articleCacheEntities : List<ArticleCacheEntity>) : List<ArticleLocal>{
         return articleCacheEntities.map {mapToArticleLocal(it)}
     }
+
+
+
 
 }

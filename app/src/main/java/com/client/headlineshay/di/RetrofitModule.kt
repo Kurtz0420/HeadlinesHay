@@ -1,6 +1,9 @@
 package com.client.headlineshay.di
 
+import android.content.Context
 import com.client.headlineshay.MyApplication
+import com.client.headlineshay.R
+import com.client.headlineshay.network.ApiKeyInterceptor
 import com.client.headlineshay.network.api.NewsApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -8,6 +11,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -27,18 +31,22 @@ object RetrofitModule{
     @Provides
     fun provideGsonBuilder() : Gson{
         return GsonBuilder()
-            .excludeFieldsWithoutExposeAnnotation()//ignores fields not marked with @Expose
-            .create()
+                .excludeFieldsWithoutExposeAnnotation()//ignores fields not marked with @Expose
+                .create()
     }
 
     @Singleton
     @Provides
-    fun provideRetrofit(gson:Gson) : Retrofit.Builder{
+    fun provideRetrofit(gson:Gson, @ApplicationContext context: Context) : Retrofit.Builder{
 
+
+        val client = OkHttpClient.Builder()
+                .addInterceptor(ApiKeyInterceptor(context.getString(R.string.news_api_key)))
 
 
         return Retrofit.Builder()
-            .baseUrl("https://newsapi.org/v2/")
+                .baseUrl("https://newsapi.org/v2/")
+
 //            .client(OkHttpClient().newBuilder().addInterceptor(Interceptor {
 //
 //                val request = it.request()
@@ -48,7 +56,7 @@ object RetrofitModule{
 //
 //                return it.proceed(newRequest.build())
 //            }).build())
-            .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
 
     }
 
@@ -57,8 +65,8 @@ object RetrofitModule{
     @Provides
     fun provideNewApi(retrofit: Retrofit.Builder) : NewsApi{
         return retrofit
-            .build()
-            .create(NewsApi::class.java)
+                .build()
+                .create(NewsApi::class.java)
     }
 
 }

@@ -5,8 +5,8 @@ package com.client.headlineshay.utils
 
 interface EntityMapper<Entity, DomainModel>{
 
-    fun mapToArticleLocal(entity: Entity) : DomainModel
+  fun mapToArticleLocal(entity: Entity) : DomainModel
 
-    fun mapFromArticleLocal(domainModel: DomainModel) : Entity
+  fun mapFromArticleLocal(domainModel: DomainModel) : Entity
 
 }

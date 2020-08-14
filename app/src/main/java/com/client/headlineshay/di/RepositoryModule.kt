@@ -4,6 +4,7 @@ import com.client.headlineshay.network.api.NetworkMapper
 import com.client.headlineshay.network.api.NewsApi
 import com.client.headlineshay.repository.MainRepository
 import com.client.headlineshay.room.ArticlesDAO
+import com.client.headlineshay.room.ArticlesDatabase
 import com.client.headlineshay.room.CacheMapper
 import dagger.Module
 import dagger.Provides
@@ -23,9 +24,10 @@ object RepositoryModule{
         articlesDAO: ArticlesDAO,
         newsApi: NewsApi,
         cacheMapper: CacheMapper,
-        networkMapper: NetworkMapper
+        networkMapper: NetworkMapper,
+        articlesDatabase: ArticlesDatabase
     ):MainRepository{
-        return MainRepository(articlesDAO, newsApi, cacheMapper, networkMapper)
+        return MainRepository(articlesDAO, newsApi, cacheMapper, networkMapper, articlesDatabase)
     }
 
 }

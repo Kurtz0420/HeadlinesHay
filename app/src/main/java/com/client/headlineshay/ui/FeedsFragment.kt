@@ -1,6 +1,5 @@
 package com.client.headlineshay.ui
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,18 +11,22 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.client.headlineshay.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.client.headlineshay.databinding.FragmentFeedsBinding
 import com.client.headlineshay.network.models.local.ArticleLocal
-import com.client.headlineshay.utils.DataState
+import com.client.headlineshay.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_feeds.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.*
 
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class FeedsFragment : Fragment(){
+class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
+
+
+    public var query = "bitcoin"
 
     private lateinit var navController: NavController
     private var binding: FragmentFeedsBinding? = null //FragmentMainBinding : Auto-Generated
@@ -32,6 +35,20 @@ class FeedsFragment : Fragment(){
     //injecting viewmodel
     private val viewModel : MainViewModel by viewModels()
 
+    lateinit var articlesListAdapter: ArticlesListAdapter
+
+    private lateinit var scrollListener: RecyclerView.OnScrollListener
+
+
+    private var linearLayoutManager = LinearLayoutManager(activity)
+
+    private val lastVisibleItemPosition: Int
+        get() = linearLayoutManager.findLastVisibleItemPosition()
+
+
+    //pagination vars
+    var isLastPage: Boolean = false
+    var isLoading: Boolean = false
 
 
     override fun onCreateView(
@@ -50,21 +67,75 @@ class FeedsFragment : Fragment(){
         navController = Navigation.findNavController(view)
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val country = requireContext().resources.configuration.locales.get(0).country.toLowerCase()
-            Toast.makeText(activity, " Country : $country", Toast.LENGTH_SHORT).show()
-        }
-
-        binding!!.btnFeeds.setOnClickListener(){
-            navController!!.navigate(R.id.action_feedsFragment_to_FullArticleFragment)
-        }
+//        binding!!.btnFeeds.setOnClickListener(){
+//            navController!!.navigate(R.id.action_feedsFragment_to_FullArticleFragment)
+//        }
 
 
+//        Wed Aug 12 15:48:27 GMT+05:00 2020
+//        E M dd HH:mm:ss O yyyy
 
+
+
+        initRecyclerView()
+        setRecyclerViewScrollListener()
         subscribeObservers()
-        viewModel.setStateEvent(MainStateEvent.GetArticles)
+        viewModel.setStateEvent(MainStateEvent.GetLatestNewsFrom)
+
+        //all the items in db from latest to oldest are fetched here
+
+    }
+
+    private fun initRecyclerView() {
+        binding!!.recyclerView.apply {
+
+            layoutManager = linearLayoutManager
+            articlesListAdapter = ArticlesListAdapter(this@FeedsFragment)
+            adapter = articlesListAdapter
+        }
+    }
 
 
+    private fun setRecyclerViewScrollListener() {
+//        scrollListener = object : RecyclerView.OnScrollListener() {
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//                val totalItemCount = recyclerView.layoutManager!!.itemCount
+//                if (totalItemCount == lastVisibleItemPosition + 1) {
+//
+//                    Log.d("FeedsFragment", "subscribe : Load new list")
+//                    viewModel.pageNo++
+//                    viewModel.setStateEvent(MainStateEvent.GetLatestNewsFrom)
+//                    recyclerView.removeOnScrollListener(scrollListener)
+//                }
+//            }
+//        }
+        recyclerView?.addOnScrollListener(object : PaginationScrollListener(linearLayoutManager) {
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
+
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+
+            override fun loadMoreItems() {
+                isLoading = true
+                //you have to call loadmore items to get more data
+                loadMoreData()
+            }
+        })
+    }
+
+    private fun loadMoreData() {
+//        viewModel.pageNumber.value?.let { a ->
+//
+//            viewModel.pageNumber.value = a + 1
+//
+//        }
+        viewModel.pageNo++
+        viewModel.setStateEvent(MainStateEvent.GetLatestNewsFrom)
+        Log.d(TAG, "subscribe: Loading More Data Page: ${viewModel.pageNo}")
     }
 
 
@@ -75,15 +146,32 @@ class FeedsFragment : Fragment(){
 
 
     private fun subscribeObservers(){
-        viewModel.dataState.observe(this, Observer { dataState ->
+        viewModel.mutableArticlesListLive.observe(viewLifecycleOwner, Observer { list ->
+
+            //mutableLIst
+            for(article in list){
+                Log.d(TAG, "subscribeObservers: ${article.title} : ${article.publishedAt} : Country:  \n")
+            }
+            articlesListAdapter.submitList(list)
+            isLoading = false
+            Log.d(TAG, "subscribeObservers: ${list.size}")
+
+        })
+
+
+        viewModel.dataStateLive.observe(viewLifecycleOwner, Observer { dataState ->
+
             when(dataState){
                 is DataState.Success<List<ArticleLocal>> -> {
 
-                    Log.d(TAG, "subscribeObservers: ${dataState.data} ")
-                    for(article in dataState.data){
-                        Log.d(TAG, "subscribeObservers: ${article.title} \n")
-                    }
-                    Log.d(TAG, "subscribeObservers: ${dataState.data.size} ")
+                    Log.d(TAG, "subscribeObservers: Sealed Class DataState.Success Size : ${dataState.data.size} ")
+
+
+
+
+
+
+
 //                    displayProgressBar(false)
 //                    appendBlogTitles(dataState.data)
                 }
@@ -105,7 +193,11 @@ class FeedsFragment : Fragment(){
 //        progress_bar.visibility = if(isDisplayed) View.VISIBLE else View.GONE
     }
 
+    override fun onItemSelected(position: Int, item: ArticleLocal) {
+        viewModel.query = "bitcoin"
+        viewModel.setStateEvent(MainStateEvent.SearchNews)
+        Toast.makeText(activity, "Clicked : ${item.title}", Toast.LENGTH_LONG).show();
+    }
 
-    
 
 }

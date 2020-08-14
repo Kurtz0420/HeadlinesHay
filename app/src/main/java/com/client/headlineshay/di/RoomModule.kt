@@ -34,4 +34,5 @@ object RoomModule {
     fun provideArticlesDAO( articlesDatabase: ArticlesDatabase): ArticlesDAO{
         return articlesDatabase.articlesDAO()
     }
+
 }

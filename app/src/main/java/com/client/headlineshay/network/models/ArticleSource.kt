@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName
 
 data class ArticleSource(
 
-    @SerializedName("id")
-    @Expose
-    var id : String?,
+        @SerializedName("id")
+        @Expose
+        var id : String?,
 
-    @SerializedName("name")
-    @Expose
-    var name : String?
+        @SerializedName("name")
+        @Expose
+        var name : String?
 
 ){
 
