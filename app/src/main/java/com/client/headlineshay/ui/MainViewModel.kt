@@ -35,13 +35,16 @@ constructor(
 
 
 
-    private val mutable_dataState : MutableLiveData<DataState<List<ArticleLocal>>> = MutableLiveData()
-    private var mutableArticlesList : MutableLiveData<MutableList<ArticleLocal>> = MutableLiveData()
+    private val mutable_dataState : MutableLiveData<DataState<List<ArticleLocal>>> = MutableLiveData<DataState<List<ArticleLocal>>>().apply {
 
-
-    //getter for list
-    val mutableArticlesListLive : LiveData<MutableList<ArticleLocal>>
-        get() = mutableArticlesList
+        value = null
+    }
+//    private var mutableArticlesList : MutableLiveData<MutableList<ArticleLocal>> = MutableLiveData()
+//
+//
+//    //getter for list
+//    val mutableArticlesListLive : LiveData<MutableList<ArticleLocal>>
+//        get() = mutableArticlesList
 
     //getter for dataState
     val dataStateLive : LiveData<DataState<List<ArticleLocal>>>
@@ -68,7 +71,7 @@ constructor(
 //                                    val newDateState = dataState as? DataState.Success
 //                                    Log.d("MainViewModel", "setStateEvent: ${newDateState?.data?.size}")
 //
-                                        val list = mutableListOf<ArticleLocal>()
+//                                        val list = mutableListOf<ArticleLocal>()
 //                                    list.addAll(dataState.data)
 //
 //                                    var dataStateEmit:MutableList<ArticleLocal> = (mutable_dataState.value as? DataState.Success)?.data!!.toMutableList()
@@ -80,12 +83,12 @@ constructor(
 //                                    articlesList.addAll(dataState.data)
 
 //                                    mutableArticlesList.value?.addAll(dataState.data)
-                                        mutableArticlesList.value = list
+//                                        mutableArticlesList.value = list
 
 
                                     }
                                 }
-//                            mutable_dataState.value = dataState
+                            mutable_dataState.value = dataState
                             }
                             .launchIn(viewModelScope)
 

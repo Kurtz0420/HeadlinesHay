@@ -46,6 +46,7 @@ object RetrofitModule{
 
         return Retrofit.Builder()
                 .baseUrl("https://newsapi.org/v2/")
+            .client(client.build())
 
 //            .client(OkHttpClient().newBuilder().addInterceptor(Interceptor {
 //

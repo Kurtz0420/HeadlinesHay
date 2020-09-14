@@ -15,7 +15,7 @@ abstract class PaginationScrollListener
  */
 (var layoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
 
-    private val VISIBLE_THRESHOLD = 20;
+    private val VISIBLE_THRESHOLD = 19;
 
     private val PAGE_START = 1;
     private val PAGE_SIZE = 10;
@@ -39,7 +39,7 @@ abstract class PaginationScrollListener
 //        }
 
         if(!isLoading() && !isLastPage()){
-            if (totalItemCount <= (lastVisibleItemPosition + 1) && totalItemCount > 9 && dy > 0) {
+            if (totalItemCount <= (lastVisibleItemPosition + 1) && totalItemCount > VISIBLE_THRESHOLD && dy > 0) {
                 loadMoreItems()
             }
         }

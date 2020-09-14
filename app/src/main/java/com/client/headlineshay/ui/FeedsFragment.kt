@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.client.headlineshay.R
 import com.client.headlineshay.databinding.FragmentFeedsBinding
 import com.client.headlineshay.network.models.local.ArticleLocal
 import com.client.headlineshay.utils.*
@@ -146,17 +148,7 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 
 
     private fun subscribeObservers(){
-        viewModel.mutableArticlesListLive.observe(viewLifecycleOwner, Observer { list ->
 
-            //mutableLIst
-            for(article in list){
-                Log.d(TAG, "subscribeObservers: ${article.title} : ${article.publishedAt} : Country:  \n")
-            }
-            articlesListAdapter.submitList(list)
-            isLoading = false
-            Log.d(TAG, "subscribeObservers: ${list.size}")
-
-        })
 
 
         viewModel.dataStateLive.observe(viewLifecycleOwner, Observer { dataState ->
@@ -165,6 +157,12 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
                 is DataState.Success<List<ArticleLocal>> -> {
 
                     Log.d(TAG, "subscribeObservers: Sealed Class DataState.Success Size : ${dataState.data.size} ")
+                    isLastPage = articlesListAdapter.itemCount == dataState.data.size
+                    articlesListAdapter.submitList(dataState.data)
+                    isLoading = false
+
+
+
 
 
 
@@ -194,9 +192,8 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
     }
 
     override fun onItemSelected(position: Int, item: ArticleLocal) {
-        viewModel.query = "bitcoin"
-        viewModel.setStateEvent(MainStateEvent.SearchNews)
-        Toast.makeText(activity, "Clicked : ${item.title}", Toast.LENGTH_LONG).show();
+        val bundle = bundleOf("url" to item.url)
+        navController.navigate(R.id.action_feedsFragment_to_FullArticleFragment, bundle)
     }
 
 
