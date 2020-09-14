@@ -21,11 +21,11 @@ object RepositoryModule{
     @Singleton
     @Provides
     fun provideMainRepository(
-        articlesDAO: ArticlesDAO,
-        newsApi: NewsApi,
-        cacheMapper: CacheMapper,
-        networkMapper: NetworkMapper,
-        articlesDatabase: ArticlesDatabase
+            articlesDAO: ArticlesDAO,
+            newsApi: NewsApi,
+            cacheMapper: CacheMapper,
+            networkMapper: NetworkMapper,
+            articlesDatabase: ArticlesDatabase
     ):MainRepository{
         return MainRepository(articlesDAO, newsApi, cacheMapper, networkMapper, articlesDatabase)
     }

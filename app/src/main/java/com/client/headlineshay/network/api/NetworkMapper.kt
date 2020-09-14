@@ -21,17 +21,17 @@ constructor() : EntityMapper<ArticleNetwork, ArticleLocal> {
 
         return ArticleLocal(
 
-            pk = null,
-            sourceId = entity.articleSource.id,
-            sourceName = entity.articleSource.name,
-            author = entity.author,
-            title = entity.title,
-            description = entity.description,
-            url = entity.url,
-            urlToImage = entity.urlToImage,
-            publishedAt = entity.publishedAt,
-            content = entity.content,
-            dateRetrieved = entity.dateRetrieved //saves the date, when it is fetched
+                pk = null,
+                sourceId = entity.articleSource.id,
+                sourceName = entity.articleSource.name,
+                author = entity.author,
+                title = entity.title,
+                description = entity.description,
+                url = entity.url,
+                urlToImage = entity.urlToImage,
+                publishedAt = entity.publishedAt,
+                content = entity.content,
+                dateRetrieved = entity.dateRetrieved //saves the date, when it is fetched
 
         )
     }
@@ -41,15 +41,15 @@ constructor() : EntityMapper<ArticleNetwork, ArticleLocal> {
 
         return ArticleNetwork(
 
-            articleSource = ArticleSource(domainModel.sourceId, domainModel.sourceName),
-            author = domainModel.author,
-            title = domainModel.title,
-            description = domainModel.description,
-            url = domainModel.url,
-            urlToImage = domainModel.urlToImage,
-            publishedAt = domainModel.publishedAt,
-            content = domainModel.content,
-            dateRetrieved = domainModel.dateRetrieved
+                articleSource = ArticleSource(domainModel.sourceId, domainModel.sourceName),
+                author = domainModel.author,
+                title = domainModel.title,
+                description = domainModel.description,
+                url = domainModel.url,
+                urlToImage = domainModel.urlToImage,
+                publishedAt = domainModel.publishedAt,
+                content = domainModel.content,
+                dateRetrieved = domainModel.dateRetrieved
 
         )
     }

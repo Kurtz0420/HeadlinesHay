@@ -13,7 +13,7 @@ abstract class PaginationScrollListener
  *
  * @param layoutManager
  */
-    (var layoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
+(var layoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
 
     private val VISIBLE_THRESHOLD = 20;
 

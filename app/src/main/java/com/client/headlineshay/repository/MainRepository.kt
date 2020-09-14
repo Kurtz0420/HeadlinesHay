@@ -23,13 +23,13 @@ import java.lang.Exception
 import java.util.*
 
 class MainRepository
-    constructor(
+constructor(
         private val articleDao:ArticlesDAO,
         private val newsApi : NewsApi,
         private val cacheMapper: CacheMapper,
         private val networkMapper: NetworkMapper,
         private val articlesDatabase: ArticlesDatabase // for clearing tables
-    ){
+){
 
     private val pageSize = 20
 
@@ -50,7 +50,7 @@ class MainRepository
 
             //gets items from api - List<ArticlesNetwork>
             val articlesResult = newsApi.getTopHeadlines(category = AppPreferences.news_category, country = AppPreferences.news_country,
-                pageSize = pageSize, page = pageNo, sources = "", q= "")
+                    pageSize = pageSize, page = pageNo, sources = "", q= "")
 
             addDateRetrieved(articlesResult.articles)
 
@@ -113,7 +113,7 @@ class MainRepository
 
             //gets items from api - List<ArticlesNetwork>
             val articlesResult = newsApi.getEverything(q= query, sources = "", domains = null, from = ""
-                ,to = "", language = Language.EN.value, sortBy = SortBy.PUBLISHED_AT.value, pageSize = 20, page = pageNo)
+                    ,to = "", language = com.client.headlineshay.network.enums.Language.ENGLISH.value, sortBy = SortBy.PUBLISHED_AT.value, pageSize = 20, page = pageNo)
 
             //converts it to local - List<ArticleLocal>
             val articles = networkMapper.mapFromArticleNetworkList(articlesResult.articles)

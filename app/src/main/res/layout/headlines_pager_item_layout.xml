@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="260dp"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="27dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image_pager_item"
+        android:scaleType="centerCrop"
+        />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="22dp"
+        >
+
+
+
+        <!--Title TextView-->
+        <TextView
+            android:id="@+id/title_pager_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lorem_title"
+            app:layout_constraintBottom_toTopOf="@id/subtitle_pager_item"
+            android:textSize="25sp"
+            android:textColor="#000"
+
+            />
+
+        <!--Subtitle TextView-->
+        <TextView
+            android:id="@+id/subtitle_pager_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lorem_subtext"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+
+
+
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    Our item ui for one page goes here-->
+
+
+
+
+
+
+</androidx.cardview.widget.CardView>

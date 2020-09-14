@@ -52,8 +52,8 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentFeedsBinding.inflate(inflater,container,false)

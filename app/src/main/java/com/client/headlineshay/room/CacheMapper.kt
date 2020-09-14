@@ -18,17 +18,17 @@ constructor() : EntityMapper<ArticleCacheEntity, ArticleLocal>{
     override fun mapToArticleLocal(entity: ArticleCacheEntity): ArticleLocal {
         return ArticleLocal(
 
-            pk = entity.id,
-            sourceId = entity.sourceId,
-            sourceName = entity.sourceName,
-            author = entity.author,
-            title = entity.title,
-            description = entity.description,
-            url = entity.url,
-            urlToImage = entity.urlToImage,
-            publishedAt = entity.publishedAt,
-            content = entity.content,
-            dateRetrieved = entity.dateRetrieved
+                pk = entity.id,
+                sourceId = entity.sourceId,
+                sourceName = entity.sourceName,
+                author = entity.author,
+                title = entity.title,
+                description = entity.description,
+                url = entity.url,
+                urlToImage = entity.urlToImage,
+                publishedAt = entity.publishedAt,
+                content = entity.content,
+                dateRetrieved = entity.dateRetrieved
         )
     }
 
@@ -37,19 +37,19 @@ constructor() : EntityMapper<ArticleCacheEntity, ArticleLocal>{
 
         return ArticleCacheEntity(
 
-            id = null,
-            sourceId = articleLocal.sourceId,
-            sourceName = articleLocal.sourceName,
-            author = articleLocal.author,
-            title = articleLocal.title,
-            description = articleLocal.description,
-            url = articleLocal.url,
-            urlToImage = articleLocal.urlToImage,
-            publishedAt = articleLocal.publishedAt,
-            content = articleLocal.content,
-            dateRetrieved = articleLocal.dateRetrieved,
-            country = AppPreferences.news_country,
-            category = AppPreferences.news_category
+                id = null,
+                sourceId = articleLocal.sourceId,
+                sourceName = articleLocal.sourceName,
+                author = articleLocal.author,
+                title = articleLocal.title,
+                description = articleLocal.description,
+                url = articleLocal.url,
+                urlToImage = articleLocal.urlToImage,
+                publishedAt = articleLocal.publishedAt,
+                content = articleLocal.content,
+                dateRetrieved = articleLocal.dateRetrieved,
+                country = AppPreferences.news_country,
+                category = AppPreferences.news_category
         )
     }
 

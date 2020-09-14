@@ -2,6 +2,7 @@ package com.client.headlineshay
 
 import android.app.Application
 import android.os.Build
+import android.util.Log
 import com.client.headlineshay.network.enums.AvailableCountries
 import com.client.headlineshay.network.enums.Category
 import com.client.headlineshay.network.enums.Country
@@ -53,6 +54,7 @@ class MyApplication: Application(){
 
         //search it in the list of available
         val isAvailable = AvailableCountries.isPresent(country)
+        Log.d(TAG, "setConfigForNews: Country : $country ----- isAvailable : $isAvailable")
 
         //set if present, otherwise US default
         AppPreferences.news_country = if(isAvailable!!) country else Country.UNITED_STATES.value

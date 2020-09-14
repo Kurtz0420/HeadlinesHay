@@ -2,27 +2,11 @@ package com.client.headlineshay.network.enums
 
 
 
-class AvailableCountries{
 
-    companion object {
+enum class Country(val value: String){
 
-        val countriesMap = HashMap<String,String>()
 
-        fun getCountriesHashMap():HashMap<String,String> {
-            for(country in Country.values()){
-            countriesMap.put(country.value,country.name)
-        }
-            return countriesMap }
-
-        fun isPresent(code: String):Boolean?{
-            return getCountriesHashMap().containsKey(code)
-        }
-    }
-
-}
-
-enum class Country(val value: String) {
-    ARAB_EMIRATES("ae"),
+    UNITED_ARAB_EMIRATES("ae"),
     ARGENTINA("ar"),
     AUSTRIA("at"),
     AUSTRALIA("au"),
@@ -32,10 +16,10 @@ enum class Country(val value: String) {
     CANADA("ca"),
     SWITZERLAND("ch"),
     CHINA("cn"),
-    COLUMBIA("co"),
+    COLOMBIA("co"),
     CUBA("cu"),
-    CZECH("cz"),
-    DE("de"),
+    CZECHIA("cz"),
+    GERMANY("de"),
     EGYPT("eg"),
     FRANCE("fr"),
     UNITED_KINGDOM("gb"),
@@ -45,10 +29,10 @@ enum class Country(val value: String) {
     INDONESIA("id"),
     IRELAND("ie"),
     ISRAEL("il"),
-    IN("in"),
+    INDIA("in"),
     ITALY("it"),
     JAPAN("jp"),
-    SOUTH_KOREA("kr"),
+    KOREA("kr"),
     LITHUANIA("lt"),
     LATVIA("lv"),
     MOROCCO("ma"),
@@ -56,7 +40,7 @@ enum class Country(val value: String) {
     MALAYSIA("my"),
     NIGERIA("ng"),
     NETHERLANDS("nl"),
-    NO("no"),
+    NORWAY("no"),
     NEW_ZEALAND("nz"),
     PHILIPPINES("ph"),
     POLAND("pl"),
@@ -64,7 +48,7 @@ enum class Country(val value: String) {
     ROMANIA("ro"),
     SERBIA("rs"),
     RUSSIA("ru"),
-    SAUDI_ARABIA("sa"),
+    SOUTH_AFRICA("sa"),
     SWEDEN("se"),
     SINGAPORE("sg"),
     SLOVENIA("si"),
@@ -75,6 +59,22 @@ enum class Country(val value: String) {
     UKRAINE("ua"),
     UNITED_STATES("us"),
     VENEZUELA("ve"),
-    SOUTH_AFRICA("za")
+    ZUID_AFRICA("za"),
 
+}
+
+
+class AvailableCountries{
+
+    companion object{
+        fun isPresent(value:String):Boolean{
+
+            enumValues<Country>().forEach {
+                if(it.value == value){
+                    return true
+                }
+            }
+            return false
+        }
+    }
 }

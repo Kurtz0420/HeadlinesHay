@@ -1,5 +1,6 @@
 package com.client.headlineshay.utils
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +11,18 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.client.headlineshay.R
 import com.client.headlineshay.network.models.local.ArticleLocal
-import kotlinx.android.synthetic.main.layout_article_item.view.*
+import kotlinx.android.synthetic.main.layout_article_item_holder.view.*
 
 
 /*Adapter with Optimized DiffUtil : uses background thread to carry out calculations for view update*/
 
 class ArticlesListAdapter(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val ARTICLE_VIEW_TYPE:Int = 0;
+    private val LOADING_VIEW_TYPE:Int = 1;
+    private val loading_indicator:String = "Loading";
+
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ArticleLocal>() {
 
@@ -34,21 +40,50 @@ class ArticlesListAdapter(private val interaction: Interaction? = null) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return ArticleViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.layout_article_item,
-                parent,
-                false
-            ),
-            interaction
-        )
+
+        if(viewType == LOADING_VIEW_TYPE){
+            Log.d("ArticleListAdapter", "onCreateViewHolder: LOading View Holder")
+            //show loading
+            return LoadingViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.layout_loading_holder,
+                    parent,
+                    false
+                )
+            )
+
+        }else{
+            //show article
+
+            return ArticleViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.layout_article_item_holder,
+                    parent,
+                    false
+                ),
+                interaction
+            )
+
+        }
+
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ArticleViewHolder -> {
-                holder.bind(differ.currentList.get(position))
+                holder.bind(differ.currentList[position])
             }
+            is LoadingViewHolder -> {
+                holder.bind()
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if(differ.currentList[position].title == loading_indicator){
+            LOADING_VIEW_TYPE
+        }else{
+            ARTICLE_VIEW_TYPE
         }
     }
 
@@ -58,11 +93,30 @@ class ArticlesListAdapter(private val interaction: Interaction? = null) :
 
     fun submitList(list: List<ArticleLocal>) {
         differ.submitList(list)
-        val size = differ.currentList.size
-        differ.currentList.addAll(list)
-        val sizeNew = differ.currentList.size
-        notifyItemRangeChanged(size, sizeNew)
+//        val size = differ.currentList.size
+//        differ.currentList.addAll(list)
+//        val sizeNew = differ.currentList.size
+//        notifyItemRangeChanged(size, sizeNew)
     }
+
+
+
+    class LoadingViewHolder
+    constructor(
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+
+
+        fun bind() = with(itemView) {
+
+
+        }
+
+
+
+
+    }
+
 
     class ArticleViewHolder
     constructor(

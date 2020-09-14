@@ -21,12 +21,12 @@ object RoomModule {
     @Provides
     fun provideArticlesDB(@ApplicationContext context : Context) : ArticlesDatabase{
         return Room.databaseBuilder(
-            context,
-            ArticlesDatabase::class.java,
-            ArticlesDatabase.DATABASE_NAME
+                context,
+                ArticlesDatabase::class.java,
+                ArticlesDatabase.DATABASE_NAME
         )
-            .fallbackToDestructiveMigration()
-            .build()
+                .fallbackToDestructiveMigration()
+                .build()
     }
 
     @Singleton

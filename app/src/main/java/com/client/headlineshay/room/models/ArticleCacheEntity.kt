@@ -11,47 +11,47 @@ import java.util.*
 @Entity(tableName = "articles", indices = [Index(value = ["title"], unique = true)])
 data class ArticleCacheEntity(
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    var id:Int?,
+        @PrimaryKey(autoGenerate = true)
+        @ColumnInfo(name = "id")
+        var id:Int?,
 
-    @ColumnInfo(name = "sourceId")
-    var sourceId:String?,
+        @ColumnInfo(name = "sourceId")
+        var sourceId:String?,
 
-    @ColumnInfo(name = "sourceName")
-    var sourceName:String?,
+        @ColumnInfo(name = "sourceName")
+        var sourceName:String?,
 
-    @ColumnInfo(name = "author")
-    var author:String?,
+        @ColumnInfo(name = "author")
+        var author:String?,
 
 
 
-    @ColumnInfo(name = "title")
-    var title:String,
+        @ColumnInfo(name = "title")
+        var title:String,
 
-    @ColumnInfo(name = "description")
-    var description:String?,
+        @ColumnInfo(name = "description")
+        var description:String?,
 
-    @ColumnInfo(name = "url")
-    var url:String?,
+        @ColumnInfo(name = "url")
+        var url:String?,
 
-    @ColumnInfo(name = "urlToImage")
-    var urlToImage:String?,
+        @ColumnInfo(name = "urlToImage")
+        var urlToImage:String?,
 
-    @ColumnInfo(name = "publishedAt")
-    var publishedAt:String?,
+        @ColumnInfo(name = "publishedAt")
+        var publishedAt:String?,
 
-    @ColumnInfo(name = "content")
-    var content:String?,
+        @ColumnInfo(name = "content")
+        var content:String?,
 
-    @ColumnInfo(name = "dateRetrieved")
-    var dateRetrieved: String?,
+        @ColumnInfo(name = "dateRetrieved")
+        var dateRetrieved: String?,
 
-    @ColumnInfo(name = "country")
-    var country: String?,
+        @ColumnInfo(name = "country")
+        var country: String?,
 
-    @ColumnInfo(name = "category")
-    var category: String?
+        @ColumnInfo(name = "category")
+        var category: String?
 
 
 

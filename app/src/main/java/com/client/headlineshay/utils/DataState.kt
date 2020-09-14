@@ -14,7 +14,7 @@ sealed class DataState<out R>{
 
 
     val DataState<*>.succeeded
-    get() = this is Success && data != null
+        get() = this is Success && data != null
 
 
     fun <T> DataState<T>.successOr(fallback: T): T{

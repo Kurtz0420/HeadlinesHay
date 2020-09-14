@@ -6,28 +6,28 @@ import java.util.*
 
 data class ArticleLocal(
 
-    var pk : Int?,
+        var pk : Int?,
 
-    var sourceId : String?,
+        var sourceId : String?,
 
-    var sourceName : String?,
+        var sourceName : String?,
 
-    var author : String?,
+        var author : String?,
 
-    var title : String,
+        var title : String,
 
-    var description : String?,
+        var description : String?,
 
-    var url : String?,
+        var url : String?,
 
-    var urlToImage : String?,
+        var urlToImage : String?,
 
-    var publishedAt : String?,
+        var publishedAt : String?,
 
-    var dateRetrieved : String?, // date of when data is retrieved to client
+        var dateRetrieved : String?, // date of when data is retrieved to client
 
-    var content : String?
+        var content : String?
 
-    ){
+){
 
 }

@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 class MainViewModel
 @ViewModelInject
 constructor(
-    private val mainRepository: MainRepository,
-    @Assisted private val savedStateHandle : SavedStateHandle
+        private val mainRepository: MainRepository,
+        @Assisted private val savedStateHandle : SavedStateHandle
 ) : ViewModel() {
 
 //    val pageNumber = MutableLiveData<Int>().apply {
@@ -59,16 +59,16 @@ constructor(
                 is MainStateEvent.GetLatestNewsFrom ->{
 
                     mainRepository.getLatestNews(pageNo)
-                        .onEach { 
-                            dataState -> // new dataState with data
+                            .onEach {
+                                dataState -> // new dataState with data
 
-                            when(dataState){
-                                is DataState.Success<List<ArticleLocal>> ->{
-                                    //update the list in LiveData DateState
+                                when(dataState){
+                                    is DataState.Success<List<ArticleLocal>> ->{
+                                        //update the list in LiveData DateState
 //                                    val newDateState = dataState as? DataState.Success
 //                                    Log.d("MainViewModel", "setStateEvent: ${newDateState?.data?.size}")
 //
-                                    val list = mutableListOf<ArticleLocal>()
+                                        val list = mutableListOf<ArticleLocal>()
 //                                    list.addAll(dataState.data)
 //
 //                                    var dataStateEmit:MutableList<ArticleLocal> = (mutable_dataState.value as? DataState.Success)?.data!!.toMutableList()
@@ -80,14 +80,14 @@ constructor(
 //                                    articlesList.addAll(dataState.data)
 
 //                                    mutableArticlesList.value?.addAll(dataState.data)
-                                    mutableArticlesList.value = list
+                                        mutableArticlesList.value = list
 
 
+                                    }
                                 }
-                            }
 //                            mutable_dataState.value = dataState
-                        }
-                        .launchIn(viewModelScope)
+                            }
+                            .launchIn(viewModelScope)
 
 
 //                    Log.d("MainViewModel", "setStateEvent: ${dataStateLive.value}")
@@ -99,10 +99,10 @@ constructor(
                     val articles = mainRepository.searchNews(query,pageNo)
 
                     articles.onEach {
-                                dataState ->
-                            mutable_dataState.value = dataState
-                        }
-                        .launchIn(viewModelScope)
+                        dataState ->
+                        mutable_dataState.value = dataState
+                    }
+                            .launchIn(viewModelScope)
 
                 }
 
