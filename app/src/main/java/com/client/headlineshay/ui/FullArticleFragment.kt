@@ -86,12 +86,26 @@ class FullArticleFragment : Fragment() {
 
     binding!!.rootView.isFocusableInTouchMode = true
     binding!!.rootView.requestFocus()
-    binding!!.rootView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-      if (keyCode == KeyEvent.KEYCODE_BACK && event.action!= ACTION_DOWN) {
-        //here the code for switching the fragment goes
-        navController.navigate(R.id.action_fullArticleFragment_to_FeedsFragment)
 
-        return@OnKeyListener true
+
+
+
+    binding!!.webView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+      if (keyCode == KeyEvent.KEYCODE_BACK && event.action!= ACTION_DOWN) {
+
+        //if webview has backStack
+        if(binding!!.webView.canGoBack()){
+          binding!!.webView.goBack()
+          return@OnKeyListener true
+
+        }else{
+          //if not stack, switch the fragment
+          //here the code for switching the fragment goes
+          navController.navigate(R.id.action_fullArticleFragment_to_FeedsFragment)
+          return@OnKeyListener true
+
+        }
+
       }
       false
     })

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="300dp"
+    android:id="@+id/rootCard"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
 
     <ImageView
         android:layout_width="match_parent"
@@ -11,6 +17,16 @@
         android:scaleType="centerCrop"
         />
 
+    <TextView
+        android:id="@+id/banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/headlines_banner_bg"
+        android:fontFamily="sans-serif-smallcaps"
+        android:padding="10dp"
+        android:text="Top Headline"
+        android:textColor="#333333"
+        android:textSize="20sp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,12 +41,16 @@
             android:id="@+id/title_pager_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/headlines_title_bg"
+            android:fontFamily="sans-serif-smallcaps"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
             android:text="@string/lorem_title"
-            app:layout_constraintBottom_toTopOf="@id/subtitle_pager_item"
-            android:textSize="20sp"
             android:textColor="#fff"
-
-            />
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/subtitle_pager_item"
+             />
 
         <!--Subtitle TextView-->
         <TextView
@@ -40,7 +60,11 @@
             android:text="@string/lorem_subtext"
             app:layout_constraintBottom_toBottomOf="parent"
             android:textSize="15sp"
-            android:textColor="#83FFFFFF"
+            android:textColor="@color/subtext"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/headlines_subtitle_bg"
             />
 
 

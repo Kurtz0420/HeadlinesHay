@@ -44,13 +44,14 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 
     private var linearLayoutManager = LinearLayoutManager(activity)
 
-    private val lastVisibleItemPosition: Int
-        get() = linearLayoutManager.findLastVisibleItemPosition()
+//    private val lastVisibleItemPosition: Int
+//        get() = linearLayoutManager.findLastVisibleItemPosition()
 
 
     //pagination vars
     var isLastPage: Boolean = false
     var isLoading: Boolean = false
+    var headlinesFlag: Boolean = false
 
 
     override fun onCreateView(
@@ -91,7 +92,7 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
     private fun initRecyclerView() {
         binding!!.recyclerView.apply {
 
-            layoutManager = linearLayoutManager
+            layoutManager = LinearLayoutManager(activity)
             articlesListAdapter = ArticlesListAdapter(this@FeedsFragment)
             adapter = articlesListAdapter
         }
@@ -112,7 +113,7 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 //                }
 //            }
 //        }
-        recyclerView?.addOnScrollListener(object : PaginationScrollListener(linearLayoutManager) {
+        recyclerView?.addOnScrollListener(object : PaginationScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
             override fun isLastPage(): Boolean {
                 return isLastPage
             }
@@ -150,6 +151,8 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
     private fun subscribeObservers(){
 
 
+        //separate headlines just in first load flag
+
 
         viewModel.dataStateLive.observe(viewLifecycleOwner, Observer { dataState ->
 
@@ -157,8 +160,12 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
                 is DataState.Success<List<ArticleLocal>> -> {
 
                     Log.d(TAG, "subscribeObservers: Sealed Class DataState.Success Size : ${dataState.data.size} ")
+
+
                     isLastPage = articlesListAdapter.itemCount == dataState.data.size
-                    articlesListAdapter.submitList(dataState.data)
+                    val list = dataState.data.toMutableList()
+                    list.add(ArticleLocal(0,"","","","Loading","","","","","",""))
+                    articlesListAdapter.submitList(list)
                     isLoading = false
 
 
@@ -191,9 +198,18 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 //        progress_bar.visibility = if(isDisplayed) View.VISIBLE else View.GONE
     }
 
-    override fun onItemSelected(position: Int, item: ArticleLocal) {
+
+    private fun gotoFullArticleFrag(item : ArticleLocal){
         val bundle = bundleOf("url" to item.url)
         navController.navigate(R.id.action_feedsFragment_to_FullArticleFragment, bundle)
+    }
+
+    override fun onItemSelected(position: Int, item: ArticleLocal) {
+        gotoFullArticleFrag(item)
+    }
+
+    override fun onHeadlineSelected(position: Int, item: ArticleLocal) {
+        gotoFullArticleFrag(item)
     }
 
 
