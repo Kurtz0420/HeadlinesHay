@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    >
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_marginTop="7dp"
+        android:layout_width="288.5dp"
+        android:layout_height="15dp"
+        android:theme="@style/progressColor"
+        android:id="@+id/progress_holder"
+        android:indeterminate="true"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please Wait.. While We Load The Full Article"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center_horizontal"
+        />
+
+
+</LinearLayout>

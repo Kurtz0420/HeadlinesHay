@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.client.headlineshay.room.models.ArticleCacheEntity
 
 
-@Database(entities = [ArticleCacheEntity::class], version = 1)
+@Database(entities = [ArticleCacheEntity::class], version = 5)
 abstract class ArticlesDatabase : RoomDatabase(){
 
     abstract fun articlesDAO() : ArticlesDAO
@@ -14,4 +14,6 @@ abstract class ArticlesDatabase : RoomDatabase(){
     companion object{
         val DATABASE_NAME:String = "ArticlesDB"
     }
+
+
 }

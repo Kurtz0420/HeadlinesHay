@@ -1,28 +1,31 @@
 package com.client.headlineshay.network.models.local
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
+
 
 data class ArticleLocal(
 
-    var sourceId : Int,
+        var pk : Int?,
 
-    var sourceName : String,
+        var sourceId : String?,
 
-    var author : String,
+        var sourceName : String?,
 
-    var title : String,
+        var author : String?,
 
-    var description : String,
+        var title : String,
 
-    var url : String,
+        var description : String?,
 
-    var urlToImage : String,
+        var url : String?,
 
-    var publishedAt : String,
+        var urlToImage : String?,
 
-    var content : String
+        var publishedAt : String?,
 
-    ){
+        var dateRetrieved : String?, // date of when data is retrieved to client
+
+        var content : String?
+
+){
 
 }

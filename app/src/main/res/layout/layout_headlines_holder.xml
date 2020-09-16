@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+
+
+    <!--Pager Goes Here-->
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/headlines_pager"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/dots_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:dotsColor="@color/white"
+        app:dotsCornerRadius="5dp"
+        app:dotsSize="9dp"
+        app:dotsSpacing="3dp"
+        app:dotsWidthFactor="2.5"
+        app:selectedDotColor="#F4511E"
+        app:progressMode="true"
+        app:layout_constraintBottom_toBottomOf="@id/headlines_pager"
+        app:layout_constraintStart_toStartOf="@id/headlines_pager"
+        app:layout_constraintEnd_toEndOf="@id/headlines_pager"
+        android:layout_marginBottom="15dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,38 +5,40 @@ import com.google.gson.annotations.SerializedName
 
 data class ArticleNetwork(
 
-    @SerializedName("source")
-    @Expose
-    var articleSource : ArticleSource,
+        @SerializedName("source")
+        @Expose
+        var articleSource : ArticleSource,
 
-    @SerializedName("author")
-    @Expose
-    var author : String,
+        @SerializedName("author")
+        @Expose
+        var author : String?,
 
-    @SerializedName("title")
-    @Expose
-    var title : String,
+        @SerializedName("title")
+        @Expose
+        var title : String,
 
-    @SerializedName("description")
-    @Expose
-    var description : String,
+        @SerializedName("description")
+        @Expose
+        var description : String?,
 
-    @SerializedName("url")
-    @Expose
-    var url : String,
+        @SerializedName("url")
+        @Expose
+        var url : String?,
 
-    @SerializedName("urlToImage")
-    @Expose
-    var urlToImage : String,
+        @SerializedName("urlToImage")
+        @Expose
+        var urlToImage : String?,
 
-    @SerializedName("publishedAt")
-    @Expose
-    var publishedAt : String,
+        @SerializedName("publishedAt")
+        @Expose
+        var publishedAt : String?,
 
-    @SerializedName("content")
-    @Expose
-    var content : String
+        @SerializedName("content")
+        @Expose
+        var content : String?,
 
-    ){
+        var dateRetrieved:String?
+
+){
 
 }
