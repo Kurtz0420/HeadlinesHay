@@ -65,29 +65,7 @@ constructor(
                             .onEach {
                                 dataState -> // new dataState with data
 
-                                when(dataState){
-                                    is DataState.Success<List<ArticleLocal>> ->{
-                                        //update the list in LiveData DateState
-//                                    val newDateState = dataState as? DataState.Success
-//                                    Log.d("MainViewModel", "setStateEvent: ${newDateState?.data?.size}")
-//
-//                                        val list = mutableListOf<ArticleLocal>()
-//                                    list.addAll(dataState.data)
-//
-//                                    var dataStateEmit:MutableList<ArticleLocal> = (mutable_dataState.value as? DataState.Success)?.data!!.toMutableList()
-//                                    dataStateEmit = list
-//
-//                                    (mutable_dataState.value as? DataState.Success)?.data = dataStateEmit
-//                                    val articlesList:MutableList<ArticleLocal> = newDateState.data.toMutableList()
 
-//                                    articlesList.addAll(dataState.data)
-
-//                                    mutableArticlesList.value?.addAll(dataState.data)
-//                                        mutableArticlesList.value = list
-
-
-                                    }
-                                }
                             mutable_dataState.value = dataState
                             }
                             .launchIn(viewModelScope)
@@ -99,6 +77,7 @@ constructor(
                 }
                 is MainStateEvent.SearchNews ->{
 
+                    Log.d("MainViewModel", "setStateEvent: $query")
                     val articles = mainRepository.searchNews(query,pageNo)
 
                     articles.onEach {

@@ -1,13 +1,22 @@
 package com.client.headlineshay.ui
 
+import android.opengl.Visibility
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
+import android.transition.TransitionManager
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -54,6 +63,13 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
     var headlinesFlag: Boolean = false
 
 
+
+    //when true feeds are populated with search news
+    var searchNewsFlag: Boolean = false
+
+    var searchNewList = mutableListOf<ArticleLocal>()
+
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -85,9 +101,87 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
         subscribeObservers()
         viewModel.setStateEvent(MainStateEvent.GetLatestNewsFrom)
 
+
+
+        binding!!.floatingSearchBtn.setOnClickListener(View.OnClickListener {
+            if(binding!!.searchLayout.visibility == View.GONE){
+                transit()
+                binding!!.searchLayout.visibility = View.VISIBLE
+            }else{
+                transit()
+                binding!!.searchLayout.visibility = View.GONE
+            }
+
+        })
+
+        binding!!.searchBarEt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action!= KeyEvent.ACTION_DOWN) {
+
+                if(query.isNotEmpty()){
+                    triggerSearchNewsWithQuery(binding!!.searchBarEt.text.toString())
+                }
+                return@OnKeyListener true
+
+
+            }
+
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action!= KeyEvent.ACTION_DOWN) {
+
+
+                //here the code for closing search phase and continuing regular feeds goes
+                triggerLatestNews()
+                return@OnKeyListener true
+
+            }
+            false
+        })
+
+
+
+        binding!!.backBtnSearch.setOnClickListener(View.OnClickListener {
+
+            if(binding!!.searchBarEt.text.isNotEmpty()){
+                triggerLatestNews()
+            }
+
+        })
+        
+
+
+
+
         //all the items in db from latest to oldest are fetched here
 
     }
+
+    fun transit(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(binding!!.root)
+        }
+    }
+
+    private fun triggerLatestNews() {
+        binding!!.searchBarEt.text = null
+        searchNewsFlag = false
+        transit()
+        binding!!.floatingSearchBtn.visibility = View.VISIBLE
+        articlesListAdapter.submitList(emptyList())
+        viewModel.pageNo = 1
+        viewModel.setStateEvent(MainStateEvent.GetLatestNewsFrom)
+    }
+
+    private fun triggerSearchNewsWithQuery(query: String?) {
+
+        searchNewsFlag = true
+        binding!!.floatingSearchBtn.visibility = View.GONE
+        searchNewList.clear()
+        articlesListAdapter.submitList(searchNewList)
+        viewModel.pageNo = 1
+        viewModel.query = query.toString()
+        viewModel.setStateEvent(MainStateEvent.SearchNews)
+
+    }
+
 
     private fun initRecyclerView() {
         binding!!.recyclerView.apply {
@@ -136,8 +230,16 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 //            viewModel.pageNumber.value = a + 1
 //
 //        }
-        viewModel.pageNo++
-        viewModel.setStateEvent(MainStateEvent.GetLatestNewsFrom)
+
+        if(!searchNewsFlag){
+            viewModel.pageNo++
+            viewModel.setStateEvent(MainStateEvent.GetLatestNewsFrom)
+        }else{
+            viewModel.pageNo++
+            viewModel.setStateEvent(MainStateEvent.SearchNews)
+            //when user is out of search, set flag to false
+        }
+
         Log.d(TAG, "subscribe: Loading More Data Page: ${viewModel.pageNo}")
     }
 
@@ -162,11 +264,25 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
                     Log.d(TAG, "subscribeObservers: Sealed Class DataState.Success Size : ${dataState.data.size} ")
 
 
-                    isLastPage = articlesListAdapter.itemCount == dataState.data.size
-                    val list = dataState.data.toMutableList()
-                    list.add(ArticleLocal(0,"","","","Loading","","","","","",""))
-                    articlesListAdapter.submitList(list)
-                    isLoading = false
+                    if(searchNewsFlag){
+                        isLastPage = articlesListAdapter.itemCount == dataState.data.size
+                        searchNewList?.addAll(dataState.data)
+                        searchNewList?.add(ArticleLocal(0,"","","","Loading","","","","","",""))
+                        articlesListAdapter.submitList(searchNewList!!.toList())
+                        Log.d(TAG, "subscribeObservers: SearchNews Success : ${searchNewList!!.size}")
+
+                        isLoading = false
+
+                    }else{
+                        Log.d(TAG, "subscribeObservers: Headlines Success")
+                        isLastPage = articlesListAdapter.itemCount == dataState.data.size
+                        val list = dataState.data.toMutableList()
+                        list.add(ArticleLocal(0,"","","","Loading","","","","","",""))
+                        articlesListAdapter.submitList(list)
+                        isLoading = false
+                    }
+
+
 
 
 

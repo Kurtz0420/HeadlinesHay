@@ -93,7 +93,7 @@ constructor(
         /*If, last request older than 24hrs*/
         val lastArticleFetchedDate = TimeConversions.stringToDate(latestArticle[0].dateRetrieved)
         val dateTimeNow = Date()
-        if(TimeConversions.getDifferenceIn(lastArticleFetchedDate, dateTimeNow, "hh").toLong() > 24){
+        if(TimeConversions.getDifferenceIn(lastArticleFetchedDate, dateTimeNow, "hh").toLong() > 2){
             //data is older than 24 hours
             clearDatabaseCache()
         }

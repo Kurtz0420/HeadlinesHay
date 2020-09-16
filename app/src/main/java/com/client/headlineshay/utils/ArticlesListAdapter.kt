@@ -30,7 +30,6 @@ class ArticlesListAdapter(private val interaction: Interaction? = null) :
     private val HEADLINES_VIEW_TYPE:Int = 2;
     private val loading_indicator:String = "Loading"
     private val HEADLINES_SIZE = 6
-    private lateinit var headlinesList:MutableList<ArticleLocal>
 
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ArticleLocal>() {
