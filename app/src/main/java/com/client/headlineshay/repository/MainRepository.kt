@@ -1,6 +1,5 @@
 package com.client.headlineshay.repository
 
-import android.util.Log
 import com.client.headlineshay.network.api.NetworkMapper
 import com.client.headlineshay.network.api.NewsApi
 import com.client.headlineshay.network.enums.SortBy
@@ -9,7 +8,6 @@ import com.client.headlineshay.network.models.local.ArticleLocal
 import com.client.headlineshay.room.ArticlesDAO
 import com.client.headlineshay.room.ArticlesDatabase
 import com.client.headlineshay.room.CacheMapper
-import com.client.headlineshay.room.models.ArticleCacheEntity
 import com.client.headlineshay.utils.AppPreferences
 import com.client.headlineshay.utils.DataState
 import com.client.headlineshay.utils.TimeConversions
@@ -53,7 +51,6 @@ constructor(
 
             addDateRetrieved(articlesResult.articles)
 
-
             //converts it to local - List<ArticleLocal>
             val articles = networkMapper.mapFromArticleNetworkList(articlesResult.articles)
             for(article in articles){
@@ -63,8 +60,7 @@ constructor(
             }
             //gets cachedArticles - List<ArticleCacheEntity>
             val cacheArticles = articleDao.getAllArticlesCached(pageNo!! * pageSize)
-            Log.d("MainRepository", "getLatestNews: ${cacheArticles.size}")
-//            paginateList(cacheArticles)
+
             //emits local - List<ArticleLocal>
             emit(DataState.Success(cacheMapper.mapFromArticleCacheEntityList(cacheArticles)))
 
@@ -81,11 +77,8 @@ constructor(
         }
     }
 
-    private fun paginateList(cacheArticles: List<ArticleCacheEntity>) {
 
-    }
-
-
+    /*Clears db cache, if certain conditions are met*/
     private suspend fun clearDatabaseIf() {
         val latestArticle  = articleDao.getLatestArticleCached()
         if(latestArticle.isNullOrEmpty()) return //for app first run
@@ -111,7 +104,7 @@ constructor(
         try{
 
             //gets items from api - List<ArticlesNetwork>
-            val articlesResult = newsApi.getEverything(q= query, sources = "", domains = null, from = ""
+            val articlesResult = newsApi.searchNewsAbout(q= query, sources = "", domains = null, from = ""
                     ,to = "", language = com.client.headlineshay.network.enums.Language.ENGLISH.value, sortBy = SortBy.PUBLISHED_AT.value, pageSize = 20, page = pageNo)
 
             //converts it to local - List<ArticleLocal>

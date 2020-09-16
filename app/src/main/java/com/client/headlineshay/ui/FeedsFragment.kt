@@ -1,12 +1,7 @@
 package com.client.headlineshay.ui
 
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.KeyEvent
@@ -16,13 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.client.headlineshay.R
 import com.client.headlineshay.databinding.FragmentFeedsBinding
 import com.client.headlineshay.network.models.local.ArticleLocal
@@ -34,7 +27,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
+class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction, View.OnClickListener{
 
 
     public var query = "bitcoin"
@@ -48,21 +41,9 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 
     lateinit var articlesListAdapter: ArticlesListAdapter
 
-    private lateinit var scrollListener: RecyclerView.OnScrollListener
-
-
-    private var linearLayoutManager = LinearLayoutManager(activity)
-
-//    private val lastVisibleItemPosition: Int
-//        get() = linearLayoutManager.findLastVisibleItemPosition()
-
-
     //pagination vars
     var isLastPage: Boolean = false
     var isLoading: Boolean = false
-    var headlinesFlag: Boolean = false
-
-
 
     //when true feeds are populated with search news
     var searchNewsFlag: Boolean = false
@@ -86,16 +67,6 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
         navController = Navigation.findNavController(view)
 
 
-//        binding!!.btnFeeds.setOnClickListener(){
-//            navController!!.navigate(R.id.action_feedsFragment_to_FullArticleFragment)
-//        }
-
-
-//        Wed Aug 12 15:48:27 GMT+05:00 2020
-//        E M dd HH:mm:ss O yyyy
-
-
-
         initRecyclerView()
         setRecyclerViewScrollListener()
         subscribeObservers()
@@ -103,63 +74,35 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 
 
 
-        binding!!.floatingSearchBtn.setOnClickListener(View.OnClickListener {
-            if(binding!!.searchLayout.visibility == View.GONE){
-                transit()
-                binding!!.searchLayout.visibility = View.VISIBLE
-            }else{
-                transit()
-                binding!!.searchLayout.visibility = View.GONE
-            }
+        binding!!.backBtnSearch.setOnClickListener(backBtnCL)
+        binding!!.floatingSearchBtn.setOnClickListener(floatingSearchCL)
 
-        })
 
         binding!!.searchBarEt.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action!= KeyEvent.ACTION_DOWN) {
-
                 if(query.isNotEmpty()){
                     triggerSearchNewsWithQuery(binding!!.searchBarEt.text.toString())
                 }
                 return@OnKeyListener true
-
-
             }
 
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action!= KeyEvent.ACTION_DOWN) {
-
-
                 //here the code for closing search phase and continuing regular feeds goes
                 triggerLatestNews()
                 return@OnKeyListener true
-
             }
             false
         })
 
-
-
-        binding!!.backBtnSearch.setOnClickListener(View.OnClickListener {
-
-            if(binding!!.searchBarEt.text.isNotEmpty()){
-                triggerLatestNews()
-            }
-
-        })
-        
-
-
-
-
-        //all the items in db from latest to oldest are fetched here
-
     }
 
-    fun transit(){
+    private fun transit(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             TransitionManager.beginDelayedTransition(binding!!.root)
         }
     }
 
+    /*Switches UI and data from search to latest News*/
     private fun triggerLatestNews() {
         binding!!.searchBarEt.text = null
         searchNewsFlag = false
@@ -170,6 +113,7 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
         viewModel.setStateEvent(MainStateEvent.GetLatestNewsFrom)
     }
 
+    /*Switches UI and data from latest News to Search*/
     private fun triggerSearchNewsWithQuery(query: String?) {
 
         searchNewsFlag = true
@@ -194,19 +138,7 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 
 
     private fun setRecyclerViewScrollListener() {
-//        scrollListener = object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                val totalItemCount = recyclerView.layoutManager!!.itemCount
-//                if (totalItemCount == lastVisibleItemPosition + 1) {
-//
-//                    Log.d("FeedsFragment", "subscribe : Load new list")
-//                    viewModel.pageNo++
-//                    viewModel.setStateEvent(MainStateEvent.GetLatestNewsFrom)
-//                    recyclerView.removeOnScrollListener(scrollListener)
-//                }
-//            }
-//        }
+
         recyclerView?.addOnScrollListener(object : PaginationScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
             override fun isLastPage(): Boolean {
                 return isLastPage
@@ -218,18 +150,13 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 
             override fun loadMoreItems() {
                 isLoading = true
-                //you have to call loadmore items to get more data
+                //you have to call load more items to get more data
                 loadMoreData()
             }
         })
     }
 
     private fun loadMoreData() {
-//        viewModel.pageNumber.value?.let { a ->
-//
-//            viewModel.pageNumber.value = a + 1
-//
-//        }
 
         if(!searchNewsFlag){
             viewModel.pageNo++
@@ -237,10 +164,7 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
         }else{
             viewModel.pageNo++
             viewModel.setStateEvent(MainStateEvent.SearchNews)
-            //when user is out of search, set flag to false
         }
-
-        Log.d(TAG, "subscribe: Loading More Data Page: ${viewModel.pageNo}")
     }
 
 
@@ -253,9 +177,6 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
     private fun subscribeObservers(){
 
 
-        //separate headlines just in first load flag
-
-
         viewModel.dataStateLive.observe(viewLifecycleOwner, Observer { dataState ->
 
             when(dataState){
@@ -265,42 +186,19 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
 
 
                     if(searchNewsFlag){
-                        isLastPage = articlesListAdapter.itemCount == dataState.data.size
-                        searchNewList?.addAll(dataState.data)
-                        searchNewList?.add(ArticleLocal(0,"","","","Loading","","","","","",""))
-                        articlesListAdapter.submitList(searchNewList!!.toList())
-                        Log.d(TAG, "subscribeObservers: SearchNews Success : ${searchNewList!!.size}")
 
-                        isLoading = false
+                        loadDataForSearchNews(dataState.data)
+
 
                     }else{
-                        Log.d(TAG, "subscribeObservers: Headlines Success")
-                        isLastPage = articlesListAdapter.itemCount == dataState.data.size
-                        val list = dataState.data.toMutableList()
-                        list.add(ArticleLocal(0,"","","","Loading","","","","","",""))
-                        articlesListAdapter.submitList(list)
-                        isLoading = false
+
+                        loadDataForLatestNews(dataState.data)
+
                     }
 
-
-
-
-
-
-
-
-
-
-
-
-//                    displayProgressBar(false)
-//                    appendBlogTitles(dataState.data)
                 }
                 is DataState.Error -> {
-                    Toast.makeText(activity, "Error Occured", Toast.LENGTH_LONG).show();
-                    Log.d(TAG, "subscribeObservers: ${dataState.exception.message}")
-//                    displayProgressBar(false)
-//                    displayError(dataState.exception.message)
+                    Toast.makeText(activity, "Something went wrong while loading data : ${dataState.exception.message}", Toast.LENGTH_LONG).show();
                 }
                 is DataState.Loading -> {
 //                    displayProgressBar(true)
@@ -310,15 +208,31 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
     }
 
 
+    private fun loadDataForLatestNews(data: List<ArticleLocal>) {
+        isLastPage = articlesListAdapter.itemCount == data.size
+        val list = data.toMutableList()
+        list.add(ArticleLocal(0,"","","","Loading","","","","","",""))
+        articlesListAdapter.submitList(list)
+        isLoading = false
+
+    }
+
+
+    private fun loadDataForSearchNews(data: List<ArticleLocal>) {
+        isLastPage = articlesListAdapter.itemCount == data.size
+        searchNewList.addAll(data)
+        searchNewList.add(ArticleLocal(0,"","","","Loading","","","","","",""))
+        articlesListAdapter.submitList(searchNewList.toList())
+        isLoading = false
+    }
+
+
     private fun displayProgressBar(isDisplayed: Boolean){
 //        progress_bar.visibility = if(isDisplayed) View.VISIBLE else View.GONE
     }
 
 
-    private fun gotoFullArticleFrag(item : ArticleLocal){
-        val bundle = bundleOf("url" to item.url)
-        navController.navigate(R.id.action_feedsFragment_to_FullArticleFragment, bundle)
-    }
+
 
     override fun onItemSelected(position: Int, item: ArticleLocal) {
         gotoFullArticleFrag(item)
@@ -327,6 +241,46 @@ class FeedsFragment : Fragment(), ArticlesListAdapter.Interaction{
     override fun onHeadlineSelected(position: Int, item: ArticleLocal) {
         gotoFullArticleFrag(item)
     }
+
+
+    private fun gotoFullArticleFrag(item : ArticleLocal){
+        val bundle = bundleOf("url" to item.url)
+        navController.navigate(R.id.action_feedsFragment_to_FullArticleFragment, bundle)
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.backBtnSearch -> {
+
+            }
+            R.id.floatingSearchBtn -> {
+
+
+            }
+        }
+    }
+
+
+    val backBtnCL = View.OnClickListener{
+        Log.d(TAG, "onClick: backBtn")
+        //check if text isnotEmpty, then switch to latest news
+        if(binding!!.searchBarEt.text.isNotEmpty()){
+            triggerLatestNews()
+        }
+    }
+
+    val floatingSearchCL = View.OnClickListener{
+        //hide/show searchBtn depending upon visibility
+        if(binding!!.searchLayout.visibility == View.GONE){
+            transit()
+            binding!!.searchLayout.visibility = View.VISIBLE
+        }else{
+            transit()
+            binding!!.searchLayout.visibility = View.GONE
+        }
+    }
+
+
 
 
 }

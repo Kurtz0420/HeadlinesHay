@@ -89,10 +89,5 @@
 
 
 
-<!--    app:floatingSearch_menu="@menu/menu_main"-->
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

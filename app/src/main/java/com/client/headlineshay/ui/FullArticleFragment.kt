@@ -32,22 +32,17 @@ import android.view.KeyEvent
 import android.view.KeyEvent.ACTION_DOWN
 
 
+
+/*Responsible for hosting WebView for full article content*/
 class FullArticleFragment : Fragment() {
 
   companion object{
     private const val TAG = "FullArticleFragment"
   }
 
-
   private var binding: FragmentFullArticleBinding?= null
   private lateinit var navController: NavController
-
   private var article_url:String? = "https://www.geeklabs.co.in/" // Change it with your URL
-
-
-
-
-
   private var progress: Progress? = null
   private var isLoaded: Boolean = false
   private var doubleBackToExitPressedOnce = false
@@ -71,11 +66,11 @@ class FullArticleFragment : Fragment() {
     navController = Navigation.findNavController(view)
     article_url = arguments?.getString("url")
 
-    Log.d(TAG, "onViewCreated: $article_url")
-
 
     binding!!.webView.settings.javaScriptEnabled = true
     binding!!.webView.settings.domStorageEnabled = true
+
+
     if (!isOnline()) {
       showToast(getString(R.string.no_internet))
       binding!!.infoTV.text = getString(R.string.no_internet)
@@ -138,26 +133,12 @@ class FullArticleFragment : Fragment() {
       override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
         isLoaded = false
         val errorMessage = "Got Error! $error"
-        showToast(errorMessage)
         binding!!.infoTV.text = errorMessage
         setProgressDialogVisibility(false)
         super.onReceivedError(view, request, error)
       }
 
 
-    }
-  }
-
-  private fun showToastToExit() {
-    when {
-      doubleBackToExitPressedOnce -> {
-        showToast("Back Pressed")
-      }
-      else -> {
-        doubleBackToExitPressedOnce = true
-        showToast(getString(R.string.back_again_to_exit))
-        Handler(Looper.myLooper()!!).postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
-      }
     }
   }
 

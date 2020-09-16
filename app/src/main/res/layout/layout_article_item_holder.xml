@@ -40,18 +40,8 @@
         android:paddingRight="10dp"
         android:paddingBottom="15dp"
         android:background="#40000000"
-
         app:layout_constraintBottom_toBottomOf="parent"
-
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/url_item"
-        android:textColor="#039BE5"
-        android:padding="7dp"
-
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,5 @@
 package com.client.headlineshay.ui
 
-import android.provider.ContactsContract
-import android.util.Log
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -23,10 +21,6 @@ constructor(
         @Assisted private val savedStateHandle : SavedStateHandle
 ) : ViewModel() {
 
-//    val pageNumber = MutableLiveData<Int>().apply {
-//        value = 1
-//    }
-
 
     var country  = AppPreferences.news_country
     var query = "bitcoin"
@@ -39,16 +33,18 @@ constructor(
 
         value = null
     }
-//    private var mutableArticlesList : MutableLiveData<MutableList<ArticleLocal>> = MutableLiveData()
-//
-//
-//    //getter for list
-//    val mutableArticlesListLive : LiveData<MutableList<ArticleLocal>>
-//        get() = mutableArticlesList
 
-    //getter for dataState
     val dataStateLive : LiveData<DataState<List<ArticleLocal>>>
         get() = mutable_dataState
+
+
+
+
+
+
+
+
+
 
 
     /*Function for setting state event
@@ -64,22 +60,16 @@ constructor(
                     mainRepository.getLatestNews(pageNo)
                             .onEach {
                                 dataState -> // new dataState with data
-
-
                             mutable_dataState.value = dataState
                             }
                             .launchIn(viewModelScope)
 
-
-//                    Log.d("MainViewModel", "setStateEvent: ${dataStateLive.value}")
-
-
                 }
+
+
+
                 is MainStateEvent.SearchNews ->{
-
-                    Log.d("MainViewModel", "setStateEvent: $query")
                     val articles = mainRepository.searchNews(query,pageNo)
-
                     articles.onEach {
                         dataState ->
                         mutable_dataState.value = dataState

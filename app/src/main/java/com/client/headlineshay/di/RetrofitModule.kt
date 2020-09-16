@@ -37,27 +37,16 @@ object RetrofitModule{
 
     @Singleton
     @Provides
-    fun provideRetrofit(gson:Gson, @ApplicationContext context: Context) : Retrofit.Builder{
+    fun provideRetrofit(@ApplicationContext context: Context) : Retrofit.Builder{
 
 
         val client = OkHttpClient.Builder()
                 .addInterceptor(ApiKeyInterceptor(context.getString(R.string.news_api_key)))
 
-
         return Retrofit.Builder()
                 .baseUrl("https://newsapi.org/v2/")
             .client(client.build())
-
-//            .client(OkHttpClient().newBuilder().addInterceptor(Interceptor {
-//
-//                val request = it.request()
-//                val newRequest:Request.Builder =request.newBuilder()
-//                    .addHeader("Connection","close")
-//                    .header("Authorization","8833c0b1962c49a2b802549139ea04cd")
-//
-//                return it.proceed(newRequest.build())
-//            }).build())
-                .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
 
     }
 

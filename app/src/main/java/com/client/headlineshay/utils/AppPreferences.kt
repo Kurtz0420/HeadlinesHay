@@ -5,6 +5,10 @@ import android.content.SharedPreferences
 import com.client.headlineshay.network.enums.Category
 import com.client.headlineshay.network.enums.Country
 
+
+
+
+/*Responsible for everything SharedPreferences related stuff*/
 object AppPreferences {
     private const val NAME = "SpinKotlin"
     private const val MODE = Context.MODE_PRIVATE

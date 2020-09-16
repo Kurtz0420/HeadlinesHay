@@ -4,18 +4,28 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical">
+    android:orientation="vertical"
+
+    >
 
     <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp" />
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_marginTop="7dp"
+        android:layout_width="288.5dp"
+        android:layout_height="15dp"
+        android:theme="@style/progressColor"
+        android:id="@+id/progress_holder"
+        android:indeterminate="true"
+        android:layout_gravity="center_horizontal"
+        />
 
     <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
-        tools:text="Loading" />
+        android:text="Please Wait.. While We Load The Full Article"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center_horizontal"
+        />
+
 
 </LinearLayout>

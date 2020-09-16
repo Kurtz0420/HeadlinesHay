@@ -1,7 +1,7 @@
 package com.client.headlineshay.utils
 
 /**
- * Created by Gokul on 2/11/2018.
+ * Responsible for top headlines in the feeds (Not used as of now)
  */
 import android.content.Context
 import android.view.LayoutInflater

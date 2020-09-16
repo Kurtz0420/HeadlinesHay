@@ -3,14 +3,13 @@ package com.client.headlineshay.utils
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+
+/*Helper for knowing the age of articles/feeds*/
 class TimeConversions{
 
 
     companion object{
-
-        fun getCurrentDate():Date{
-            return Date()
-        }
 
         /*Gives difference of two Dates in hours,minutes,seconds*/
         fun getDifferenceIn(startDate: Date?, nowDate:Date, unit:String):String{

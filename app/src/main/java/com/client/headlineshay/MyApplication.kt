@@ -54,7 +54,6 @@ class MyApplication: Application(){
 
         //search it in the list of available
         val isAvailable = AvailableCountries.isPresent(country)
-        Log.d(TAG, "setConfigForNews: Country : $country ----- isAvailable : $isAvailable")
 
         //set if present, otherwise US default
         AppPreferences.news_country = if(isAvailable!!) country else Country.UNITED_STATES.value

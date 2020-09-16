@@ -9,6 +9,11 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import com.client.headlineshay.R
 
+
+
+
+
+/*Progress for when fullArticle in WebView is loading*/
 class Progress constructor(
     context: Context?,
     @StringRes private val titleRes: Int,

@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.layout_article_item_holder.view.*
 import kotlinx.android.synthetic.main.layout_headlines_holder.view.*
 
 
-/*Adapter with Optimized DiffUtil : uses background thread to carry out calculations for view update*/
+/*Main Feeds Adapter. Adapter with Optimized DiffUtil : uses background thread to carry out calculations for view update*/
 
 class ArticlesListAdapter(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -90,15 +90,12 @@ class ArticlesListAdapter(private val interaction: Interaction? = null) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ArticleViewHolder -> {
-                Log.d("ArticlesAdapter", "onBindViewHolder: Positions with headlines : $position")
                 holder.bind(differ.currentList[position])
             }
             is LoadingViewHolder -> {
                 holder.bind()
             }
             is HeadlinesPagerHolder ->{
-//                val list = listOf(differ.currentList[position], differ.currentList[position+1], differ.currentList[position+2], differ.currentList[position+3], differ.currentList[position+4], differ.currentList[position+5]).toMutableList()
-//                holder.bind(differ.currentList.take(HEADLINES_SIZE).toMutableList())
                 holder.bind(differ.currentList[position])
             }
         }
@@ -133,16 +130,7 @@ class ArticlesListAdapter(private val interaction: Interaction? = null) :
     constructor(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
-
-
-        fun bind() = with(itemView) {
-
-
-        }
-
-
-
-
+        fun bind() = with(itemView) {}
     }
 
     class HeadlinesPagerHolder
@@ -173,12 +161,6 @@ class ArticlesListAdapter(private val interaction: Interaction? = null) :
             itemView.subtitle_pager_item.text = item.description
 
 
-//            this.headlines_pager.requestLayout()
-//            val newHeight = Resources.getSystem().displayMetrics.heightPixels / 2 + 300
-//            this.headlines_pager.layoutParams.height = newHeight
-//            this.headlines_pager.adapter = HeadlinesPagerAdapter(context, items.toMutableList())
-//            this.dots_indicator.setViewPager(this.headlines_pager)
-
         }
 
 
@@ -204,7 +186,6 @@ class ArticlesListAdapter(private val interaction: Interaction? = null) :
 
             itemView.title_item.text = item.title
             itemView.decription_item.text = item.description
-//            itemView.url_item.text = item.url
 
             val requestOptions = RequestOptions
                 .placeholderOf(R.drawable.ic_placeholder)

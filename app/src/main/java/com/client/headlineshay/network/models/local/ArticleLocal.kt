@@ -1,8 +1,6 @@
 package com.client.headlineshay.network.models.local
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-import java.util.*
+
 
 data class ArticleLocal(
 

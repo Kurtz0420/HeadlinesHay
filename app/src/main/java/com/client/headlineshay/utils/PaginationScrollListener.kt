@@ -15,10 +15,7 @@ abstract class PaginationScrollListener
  */
 (var layoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
 
-    private val VISIBLE_THRESHOLD = 19 //19
-
-    private val PAGE_START = 1;
-    private val PAGE_SIZE = 10;
+    private val VISIBLE_THRESHOLD = 19 //optimal for 20 items/page
 
     abstract fun isLastPage(): Boolean
 
@@ -27,16 +24,10 @@ abstract class PaginationScrollListener
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
-//        val totalItemCount  =layoutManager.itemCount
-//        val lastVisibleItem  =layoutManager.findLastVisibleItemPosition()
-        val visibleItemCount = layoutManager.childCount
         val totalItemCount = layoutManager.itemCount
         val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-//
-//        if (!isLoading() && totalItemCount <= (lastVisibleItem + VISIBLE_THRESHOLD)) {
-//            loadMoreItems()
-//
-//        }
+
+
 
         if(!isLoading() && !isLastPage()){
             if (totalItemCount <= (lastVisibleItemPosition + 1) && totalItemCount > VISIBLE_THRESHOLD && dy > 0) {
@@ -44,22 +35,6 @@ abstract class PaginationScrollListener
             }
         }
 
-
-
-//        if (!isLoading() && !isLastPage()) {
-//            if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-//                && firstVisibleItemPosition >= 0
-//                && totalItemCount >= PAGE_SIZE) {
-//                loadMoreItems();
-//            }
-//        }
-
-//        if (!isLoading() && !isLastPage()) {
-//
-//            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-//                loadMoreItems()
-//            }//                    && totalItemCount >= ClothesFragment.itemsCount
-//        }
     }
     abstract fun loadMoreItems()
 }
